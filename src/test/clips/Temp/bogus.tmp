@@ -1,0 +1,5 @@
+([initial-object] of INITIAL-OBJECT)
+
+([a] of A
+   (foo "\"This is a string\""))
+

@@ -1,0 +1,15 @@
+drtest07.bat differences are as follows:
+    62: 937 ;; Different number is OK - Reference number
+    62: 2565
+    69: 937 ;; Different number is OK but should be same as reference number
+    69: 2565
+    76: 937 ;; Different number is OK but should be same as reference number
+    76: 2565
+    84: 937 ;; Different number is OK but should be same as reference number
+    84: 2565
+    98: 937 ;; Different number is OK but should be same as reference number
+    98: 2565
+   106: 937 ;; Different number is OK but should be same as reference number
+   106: 2565
+   912: (BOGUS 2.0 0 FALSE 29601.0 26138.0) ;; Last two fields can be different
+   912: (BOGUS 2.0 0 FALSE 22501.0 8850.0)

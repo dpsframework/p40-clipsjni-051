@@ -1,0 +1,4 @@
+(initial-fact)
+(A (x 1))
+(B (x 1))
+(B (x 2))

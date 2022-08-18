@@ -1,0 +1,6 @@
+([initial-object] of INITIAL-OBJECT)
+
+([quoxnar] of A
+   (foo [fribban])
+   (bar))
+

@@ -1,0 +1,13 @@
+(defmodule A
+   (export deftemplate AT))
+
+(deftemplate A::AT
+   (slot x))
+
+(defmodule MAIN
+   (import A deftemplate AT))
+
+(defrule MAIN::RAT
+   (AT (x 3))
+   =>)
+

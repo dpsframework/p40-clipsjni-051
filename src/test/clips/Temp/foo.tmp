@@ -1,0 +1,3 @@
+(initial-fact)
+(fact "a b c")
+(fact a b c)

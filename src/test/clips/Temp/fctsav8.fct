@@ -1,0 +1,6 @@
+(initial-fact)
+(A (x 1))
+(B (x 1))
+(B (x 2))
+(E (x 1))
+(F (x 1))

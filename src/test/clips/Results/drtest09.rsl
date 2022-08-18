@@ -1,0 +1,5 @@
+drtest09.bat differences are as follows:
+   641: [CONSCOMP1] Aborting because the base file name may cause the fopen maximum of 1024 to be violated when file names are generated.
+   641: [CONSCOMP1] Aborting because the base file name may cause the fopen maximum of 260 to be violated when file names are generated.
+   649: Profile elapsed time = 0.005962 seconds ;; Different number is OK
+   649: Profile elapsed time = 0 seconds
