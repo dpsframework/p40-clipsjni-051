@@ -88,10 +88,10 @@
              src\test\>   SET MODE_CLIPSJNI=1
              src\test\>   java -cp clips/*; net.sf.clipsrules.jni.Shell    (For Windows)
           
-         2. Desde la línea de Java con la variableIncorporando una variable de ambiente: MODE_CLIPSJNI=1
+         2. Desde la línea de Java con la propiedad: mode.clips = 1
              src\test\>   java -Dmode.clipsjni=1 -jar src/test/clips/clipsjni-6.31-x64.jar
    
-         **EN AMBOS CASO DEBE PRODUCIRSE UN ERRO**. Pero, si copia la libreía C++ de CLIPS-6.31 en el PATH
+- **EN AMBOS CASO DEBE PRODUCIRSE UN ERRO**. Pero, si copia la libreía C++ de CLIPS-6.31 en el PATH
          todo funcionará correctamente, porque CLIPSJNI cargará la misma desde el PATH de máquina.
          
          
