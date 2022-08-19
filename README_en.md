@@ -92,7 +92,7 @@
          or
          
          
-         2. From the Java line with the variableIncorporating an environment variable: MODE_CLIPSJNI=1
+         2. Using Java line parameter mode.clipsjni=1
              src\test\> java -Dmode.clipsjni=1 -jar src/test/clips/clipsjni-6.31-x64.jar
    
    
@@ -107,6 +107,7 @@
 - **abstract**:  'The CLIPSJNI-051 Java component allows Java to be connected to the CLIPS core developed in C++. This proposal provides a proven solution for detecting the architecture of the machine at runtime, in addition to incorporating additional security enhancements. It is oriented to be used by JADE PS-Agents with problem resolution capabilities. However, it can be useful in any application that requires CLIPS 6.31 connectivity from Java.'
 
 ##  To-Do List:
+
 - [x]  \(1) Achieve compliance of CLIPSJNI with Java Platform Module System (JPMS)[^migra17] development specifications.
 - [x]  \(2) Allow compilation from Java[^java] versions JDK-11 through JDK-17 LTS (2022-2029) and higher. 
 - [x]  \(3) Optimize performance of CLIPSJNI-0.51 within the Agent behaviors of the JADE platform.
