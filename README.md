@@ -10,74 +10,54 @@
 
 ## Descripción y estado de la propuesta
 
-- **status**:  'Completed'
-- **title**:  'Proposal: native library dual self-location of CLIPSJNI-0.51'
-- **subtitle**:  'Proposal to update CLIPS-JNI-0.51 to facilitate the detection of the machine architecture and location of the native library at runtime'
-- **resumen**:  'The CLIPSJNI-051 Java component allows Java to be connected to the CLIPS core developed in C++. This proposal provides a proven solution for detecting the architecture of the machine at runtime, in addition to incorporating additional security enhancements. It is oriented to be used by JADE PS-Agents with problem resolution capabilities. However, it can be useful in any application that requires CLIPS 6.31 connectivity from Java.'
-
-##  To-Do List:
-
-- [x]  \(1) Achieve compliance of CLIPSJNI with Java Platform Module System (JPMS)[^migra17] development specifications.
-- [x]  \(2) Allow compilation from Java[^java] versions JDK-11 through JDK-17 LTS (2022-2029) and higher. 
-- [x]  \(3) Optimize performance of CLIPSJNI-0.51 within the Agent behaviors of the JADE platform.
-- [x]  \(4) Incorporate build step sequence files for different architectures.
-- [x]  \(5) Carry out the CLIPS 6.31 tests on a Node-type Agents console.
-- [x]  \(6) Prepare as a GitHub repository for download and evaluation of the proposal.
-
-
-
-
-
-
-
-
-
-
-
+- **status**:  'Finalizado'
+- **title**:  'Propuesta: autoubicación dual de biblioteca nativa de CLIPSJNI-0.51'
+- **subtitle**:  'Propuesta de actualización de CLIPS-JNI-0.51 para facilitar la detección de la arquitectura de máquina y ubicación de librería nativa en tiempo de ejecución'
+- **resumen**:  'El componente Java CLIPSJNI-051 permite conectar Java al núcleo de CLIPS desarrollado en C++. Esta propuesta proporciona una solución probada para detectar la arquitectura de la máquina en tiempo de ejecución, además de incorporar otras mejoras de seguridad adicionales. Está orientada a ser utilizada por los Agentes-PS de JADE con capacidad de resolución de problemas. Sin embargo, puede ser útil en cualquier aplicación que requiera conectividada CLIPS 6.31 desde Java.'
   
 
-##   Section 1: Identification
--  Responsible for the proposal: _FJ Aguayo_.
--  Proposal date: April, 2022.
--  Results location: GitHub repo.
+##   Sección 1: Identificación
+-  Responsable de la propuesta: _FJ Aguayo_.
+-  Fecha de la propuesta: Abril, 2022.
+-  Ubicación de resultados: GitHub repo.
 
-##   Section 2: Process
--  The CLIPS-JNI version 0.51 Java native interface for CLIPS 6.31[^1]  has been reviewed by _Gary Riley_ on 2019-08-06. The source code is available on the Source forge at <https://sourceforge.net/projects/clipsrules/files/CLIPS/6.31/>.
--  JADE[^jade] agents capable of integrating and executing autonomous Expert Systems on the Multi-Agent platform require prior knowledge of the architecture of the Java machine and the hardware on which they are executed.
+##   Sección 2: Procesos
+-  La interfaz nativa de Java CLIPS-JNI version 0.51 para CLIPS 6.31[^1] ha sido revisada por _Gary Riley_ el pasado 2019-08-06. El código fuente está disponible en Source forge, en <https://sourceforge.net/projects/clipsrules/files/CLIPS/6.31/>.
+-  Los agentes JADE[^jade] con capacidades de integrar y ejecutar Sistemas Expertos autónomos sobre la plataforma Multi-Agente, requieren conocer de antemano cuál es la arquitectura de la máquina Java y del hardware donde se ejecutan. 
 
-###  2.1. Description of the proposal:
+###  2.1. Descripción de la propuesta:
 
--  Carry out a development on CLIPS-JNI-0.51 so that this interface detects which is the Java machine and the hardware architecture of the node where the Multi-Agent system is executed, and in this way, the CLIPSJNI Library itself associates and links with its library native in C++.
--  The development of the additional security elements was carried out by adjusting the visibility of the fundamental Objects that make up the CLIPS-JNI-0.51 library.
+-  Realizar un desarrollo sobre CLIPS-JNI-0.51 para que esa interfaz detecte cuál es la máquina de Java y la arquitectura hardware de nodo donde se ejecuta el sistema Multi-Agente, y de esa forma, la propia Librería CLIPSJNI asocie y enlace con su librería nativa en C++.
+-  El desarrollo de los elementos de seguridad adicionales, se realizó mediante el ajuste de la visibilidad de los Objetos fundamentales que componen la librería CLIPS-JNI-0.51
 
-###  2.2. target platform
--  Java JDK-11[^java] through JDK-18[^migra17]. OpenJDK-18[^openJDK]. CLIPS 6.31
+###  2.2. Plataforma de destino
+-  Java JDK-11[^java] hasta JDK-18[^migra17]. OpenJDK-18[^openJDK]. CLIPS 6.31
   
--  JADE Troubleshooting Agents, version 1.9 or higher.
+-  Agentes de Resolución de Problemas de JADE, version 1.9 o superior.
 
 
 
 
-###  23. What does the proposal need for its execution?
--  ECLIPSE IDE 2022.
--  CLIPS 6.31 source-code. CLIPS-JNI-0.51 source-code.
--  JADE PS Agents version 1.9 or higher.
+###  2.3. ¿Qué necesita la propuesta de para su ejecución?
+-  ECLIPSE IDE 2022. 
+-  CLIPS 6.31 código-fuente. CLIPS-JNI-0.51 código-fuente.
+-  Agentes PS de JADE version 1.9 o superior.
 -  CLIPS 6.31 test[^cool]
 
-###  2.4. Why this proposal?
--  Because the dpsAgents-1.8-full.jar library, developed for JAVA 1.8, is not capable of linking the autonomous expert systems of JADE agents, with the CLIPS 6.31 kernel, nor with CLIPS 6.40.
--  Because the detection and link mechanism between the Agent and CLIPS or Prolog must be done by the native library, in an early link, eliminating the need for the agent to locate the location of the Native Library for OS-X, Gnu-Linux , Windows 32bits or Windows 64bits.
+###  2.4. ¿Por qué esta propuesta?
+-  Porque la librería dpsAgents-1.8-full.jar, desarrollada para JAVA 1.8, no es capaz de enlazar los sistemas expertos autónomos de los agentes JADE, con el núcleo de CLIPS 6.31, ni tampoco con CLIPS 6.40.
+-  Porque el mecanismo de detección y enlace entre el Agente y CLIPS o Prolog, debe realizarse por parte de la librería nativa, en un enlace temprano, eliminando del agente la necesidad de localizar la ubicación de la Librería Nativa para OS-X, Gnu-Linux, Windows 32bits o Windows 64bits.
 
 
 
 
 
 
-###  2.5. Underlying technology or technologies:
+###  2.5. Tecnología o tecnologías subyacentes:
 -  CLIPS
 -  COOL
 -  Java
--  lisp
+-  Lisp
 
 
 
@@ -86,7 +66,7 @@
 
 
 
-###  2.6. Name of the generated library?
+###  2.6. ¿Nombre de la librería generada?
 -    clipsjni-051ps-i586.jar
 -    clipsjni-051ps-amd64.jar
 etc.
@@ -102,8 +82,8 @@ etc.
 
 
 
-###  2.7. Dependencies on specific operating systems
--  None.
+###  2.7. Dependencias en sistemas operativos específicos
+-  Ninguna.
 
 
 
@@ -116,8 +96,8 @@ etc.
 
 
 
-###  2.8. Security issues due to the current security model
--  Does not apply to this project
+###  2.8. Cuestiones de seguridad por el modelo de seguridad actual
+-  No se aplica en este proyecto
 
 
 
@@ -132,8 +112,8 @@ etc.
 
 
 
-###  2.9. Internationalization or localization problems?
--  They have not been implemented.
+###  2.9. ¿Problemas de internacionalización o localización?
+-  No se han implementado.
 
 
 
@@ -149,8 +129,8 @@ etc.
 
 
 
-###  2.10. Any need for revision as a result of this work?
--  It has not been planned. Awaiting review.
+###  2.10. ¿Alguna necesidad de revisión como resultado de este trabajo?
+-  No se ha previsto. A la espera de revisión.
 
 
 
@@ -167,9 +147,9 @@ etc.
 
 
 
-###  2.11. Schedule for the development of this proposal
--   Start: **April 2022**
--   End: **August 2022**
+###  2.11. Cronograma para el desarrollo de esta propuesta
+-   Inicio: **Abril de 2022**
+-   Final: **Agosto 2022**
 
 
 
@@ -186,12 +166,12 @@ etc.
 
 
 
-##   Section 3: Contributions
+##   Sección 3: Contribuciones
 
 
 
 
-###  3.1. Documents, proposals or implementations that describe the technology.
+###  3.1. Documentos, propuestas o implementaciones que describen la tecnología.
 
 
 
@@ -207,8 +187,8 @@ etc.
 
 
 
-###  3.2. Starting point of the work.
--   CLIPSJNI-051 on Source Forge at: https://sourceforge.net/projects/clipsrules/files/CLIPS/6.31/clips_jni_051.tar.gz/download
+###  3.2. Punto de partida de la obra.
+-   CLIPSJNI-051 en Source Forge en: https://sourceforge.net/projects/clipsrules/files/CLIPS/6.31/clips_jni_051.tar.gz/download
 
 
 
@@ -228,7 +208,7 @@ etc.
 
 
 
-##   Section 4: Additional Information (Optional)
+##   Sección 4: Información Adicional (Opcional)
 
 
 
@@ -241,7 +221,7 @@ etc.
 
 
 
-###  4.1. Additional information to include in the Improvement Proposal
+###  4.1. Información adicional a incluir en la Propuesta de Mejora
   
   
 
@@ -252,7 +232,7 @@ etc.
 
 
 
-##  _References_
+##  _Bibliografía_
 
 [^1]: CLIPS Rule Based Programming Language Files. Expert System Tool. Gary, Riley D. (Ed. 2022). URL: https://sourceforge.net/projects/clipsrules/.
 
@@ -265,7 +245,6 @@ etc.
 [^openJDK]: OpenJDK 17 is the open-source reference implementation of version 17 of the Java SE Platform, as specified by by JSR 390 in the Java Community Process. JDK 17 reached General Availability on 14 September 2021. URL for OpenJDK-11 is: https://openjdk.java.net/projects/jdk/11/. URL for OpenJDK-17 is: https://openjdk.java.net/projects/jdk/17/.
 
 [^cool]: COOL is the acronym for CLIPS Object Oriented Language.
-
 
 
 
