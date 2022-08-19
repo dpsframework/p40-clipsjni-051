@@ -5,7 +5,101 @@
 
 ## Cómo construir la Librerías para cada arquitectura y realizar una comprobación completa de CLIPS 6.31 (2019) desde Java
 
-- Desde consola ...
+- Desde consola, en directorio: `p40-clipsjni-051`
+1. Según su sistema operativo, ejecutar uno de los archivos `generate-ClipsJNI-6.31-` con la arquitectura y JVM a emplear.
+1. A continuación, modifique sobre dicho archivo, los valores de JAVA_HOME de su versión específica de Java.
+
+1. Vuelva a ejecutar, y obtendrá en pantall la relación de pasos necesarios para obtener: 
+   1. La librería nativa de Java (.jar) para su arquitectura.
+   1. Las pautas necesarias para compilar CLIPS 6.31, conectado al archivo de cabera: `net_sf_clipsrules_jni_Environment.h` que ha creado durante la compilación de las clases de la Librería Nativa en el paso anterior.
+   1. A continuación, compruebe su archvio de nombre `makefile-XXX-SO` especialmente creado para esta versión de CLIPSJNI-051
+   1. Modifique a demanda los valores de JAVA_HOME para su versión específica de Java en la cabecera de esos archivos.
+   1. Compile en C++ con las instrucciones mostradas.
+1. Generar el .JAR siguiendo las indicaciones.
+1. Lanzar según los tres posibles mecanismos que aporta Java JDK-11 a 18:
+
+        modular   
+        mediante -jar 
+        mediante --class-path ./*:
+        
+```        
+ -------------------------------------------------------------
+ Launch with:
+ -------------------------------------------------------------
+ java -p clipsjni-6.31-x64.jar    -m net.sf.clipsrules.jni/net.sf.clipsrules.jni.Shell
+ java -jar clipsjni-6.31-x64.jar    net.sf.clipsrules.jni.Shell
+ java  net.sf.clipsrules.jni.Shell
+ 
+```
+
+ 
+ 
+
+- Esta propuesta puede generar las siguientes combinaciones de librerías CLIPSJNI-051, que buscan a sus ejecutables de CLIPS-6.31:
+
+          
+          // clipsjni-6.31-amd32.jar -->  libclipsjni-6.31-amd32.so      GNU-Linux 32bits JVM
+          // clipsjni-6.31-amd64.jar -->  libclipsjni-6.31-amd64.so      GNU-Linux 64bits
+          // clipsjni-6.31-x86.jar   -->  clipsjni-6.31-x86.dll          Windows 10 / 32bits JVM
+          // clipsjni-6.31-x64.jar   -->  clipsjni-6.31-x64.dll          Windows 10 / 64bits JVM
+          // clipsjni-6.31-osx64.jar -->  libclipsjni-6.31-osx64.jnilib  macOS 11.4 (20F71)  Darwin 20.5.0
+          // clipsjni-6.31-arm64.jar -->  libclipsjni-6.31-arm64.so      Raspberry Pi OS
+
+
+#### Para realizar una comprobación completa de CLIPS 6.31 desde Java, proceder con: 
+
+1. Copiar, por ejemplo, `clipsjni-6.31-x64.dll` y `clipsjni-6.31-x64.jar` al directorio `/src/test/clips/.`   
+2. Arrancar una Shell del CLIPS-6.31 con `java -jar clipsjni-6.31-x64.jar`
+3. Comprobar con: 
+
+         CLIPS>  (batch  testall.tst)
+      
+4. Salir con: 
+   
+         CLIPS>  (exit)
+      
+
+#### Comprobación del comportamiento DUAL y de Auto-Localización incorporado a CLIPSJNI-051.
+
+1. Desde el directorio anterior: moverse un directorio hacia atrás
+   
+         src/test/clips/$  cd ..
+         src/test/$  
+
+
+2. El funcionamiento de esta versión de la Librería de CLIPSJNI-051, tienen dos modos: 
+
+
+   a. **MODO POR DEFECTO**: Localiza la librería C++ de CLIPS-6.31 en el mismo directorio de la librería JNI de Java .JAR
+   
+         src\test\>   java -cp clips/*; net.sf.clipsrules.jni.Shell    (For Windows)
+         
+         src/test/$   java -cp clips/*: net.sf.clipsrules.jni.Shell    (Others)
+         
+   
+- **OBSERVAR QUE**: el CLASSPATH del HOST o el valor de CLASSPATH entregado en tiempo de lanzamiento, es sufiente para que CLIPSJNI encuentre su librería C++ correspondiente, aunque no dicha libreraía esté en el PATH.
+   
+   
+   
+     
+   b. **MODO PATH**:  
+   
+         1. Incorporando una variable de ambiente: MODE_CLIPSJNI=1
+             src\test\>   SET MODE_CLIPSJNI=1
+             src\test\>   java -cp clips/*; net.sf.clipsrules.jni.Shell    (For Windows)
+          
+         2. Desde la línea de Java con la variableIncorporando una variable de ambiente: MODE_CLIPSJNI=1
+             src\test\>   java -Dmode.clipsjni=1 -jar src/test/clips/clipsjni-6.31-x64.jar
+   
+         **EN AMBOS CASO DEBE PRODUCIRSE UN ERRO**. Pero, si copia la libreía C++ de CLIPS-6.31 en el PATH
+         todo funcionará correctamente, porque CLIPSJNI cargará la misma desde el PATH de máquina.
+         
+         
+   
+   
+       
+
+
 
 
 ## Descripción y estado de la propuesta
