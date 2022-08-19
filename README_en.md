@@ -6,8 +6,98 @@
 
 ## How to build the libraries for each architecture and how to perform a full check
 
-- From console
+- From console, in directory: `p40-clipsjni-051`
+1. Depending on your operating system, run one of the `generate-ClipsJNI-6.31-` files with the architecture and JVM to use.
+1. Next, modify on that file, the JAVA_HOME values ​​of your specific version of Java.
 
+1. Execute again, and you will get on the screen the list of steps necessary to obtain:
+   1. The native Java library (.jar) for your architecture.
+   1. The guidelines needed to compile CLIPS 6.31, connected to the header file: `net_sf_clipsrules_jni_Environment.h` that you created during the compilation of the Native Library classes in the previous step.
+   1. Next, check your file name `makefile-XXX-SO` specially created for this version of CLIPSJNI-051
+   1. Customize the JAVA_HOME values ​​for your specific version of Java in the header of those files.
+   1. Compile in C++ with the instructions shown.
+1. Generate the .JAR following the instructions.
+1. Launch according to the three possible mechanisms provided by Java JDK-11 to 18:
+
+        modular
+        via -jar
+        via --class-path ./*:
+        
+```
+ -------------------------------------------------- -----------
+ Launch with:
+ -------------------------------------------------- -----------
+ java -p clipsjni-6.31-x64.jar -m net.sf.clipsrules.jni/net.sf.clipsrules.jni.Shell
+ java -jar clipsjni-6.31-x64.jar net.sf.clipsrules.jni.Shell
+ java net.sf.clipsrules.jni.Shell
+ 
+```
+
+ 
+ 
+
+- This proposal can generate the following combinations of CLIPSJNI-051 libraries, which look for their CLIPS-6.31 executables:
+
+          
+          // clipsjni-6.31-amd32.jar --> libclipsjni-6.31-amd32.so GNU-Linux 32bits JVM
+          // clipsjni-6.31-amd64.jar --> libclipsjni-6.31-amd64.so GNU-Linux 64bits
+          // clipsjni-6.31-x86.jar   --> clipsjni-6.31-x86.dll Windows 10 / 32bits JVM
+          // clipsjni-6.31-x64.jar   --> clipsjni-6.31-x64.dll Windows 10 / 64bits JVM
+          // clipsjni-6.31-osx64.jar --> libclipsjni-6.31-osx64.jnilib macOS 11.4 (20F71) Darwin 20.5.0
+          // clipsjni-6.31-arm64.jar --> libclipsjni-6.31-arm64.so Raspberry Pi OS
+
+
+#### To perform a full check of CLIPS 6.31 from Java, proceed with:
+
+1. Copy, for example, `clipsjni-6.31-x64.dll` and `clipsjni-6.31-x64.jar` to the `/src/test/clips/.` directory
+2. Start a CLIPS-6.31 shell with `java -jar clipsjni-6.31-x64.jar`
+3. Check with:
+
+         CLIPS> (batch testall.tst)
+      
+4. Go out with:
+   
+         CLIPS> (exit)
+      
+
+#### DUAL behavior and Auto-Location check built into CLIPSJNI-051.
+
+1. From previous directory: move one directory back
+   
+         src/test/clips/$ cd ..
+         src/test/$
+
+
+2. The operation of this version of the CLIPSJNI-051 Library has two modes:
+
+
+   a. **DEFAULT MODE**: Locate the CLIPS-6.31 C++ library in the same directory as the Java JNI library .JAR
+   
+         src\test\> java -cp clips/*; net.sf.clipsrules.jni.Shell (For Windows)
+         
+         src/test/$ java -cp clips/*: net.sf.clipsrules.jni.Shell (Others)
+         
+   
+- **NOTE THAT**: the CLASSPATH of the HOST or the value of CLASSPATH delivered at launch time, is enough for CLIPSJNI to find its corresponding C++ library, even if said library is not in the PATH.
+   
+   
+   
+     
+   b. **PATH MODE**:
+   
+         1. Adding an environment variable: MODE_CLIPSJNI=1
+             src\test\> SET MODE_CLIPSJNI=1
+             src\test\> java -cp clips/*; net.sf.clipsrules.jni.Shell (For Windows)
+         
+         or
+         
+         
+         2. From the Java line with the variableIncorporating an environment variable: MODE_CLIPSJNI=1
+             src\test\> java -Dmode.clipsjni=1 -jar src/test/clips/clipsjni-6.31-x64.jar
+   
+   
+-  **IN BOTH CASES AN ERROR SHOULD OCCUR**. But, if you copy the CLIPS-6.31 C++ library to the PATH
+         everything will work fine, because CLIPSJNI will load it from the machine PATH.
 
 ## Proposal description and status
 
