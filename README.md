@@ -2,7 +2,7 @@
 [English](https://github.com/dpsframework/p40-clipsjni-051/#p40-clipsjni-051-1)
 
 
-## Propuesta de actualización de CLIPSJNI-051 para CLIPS-6.31 (Finalizada)
+#### Propuesta de actualización de CLIPSJNI-051 para agentes dpsAgents-2.1 (Finalizada)
 
 ## Cómo construir la Librerías para cada arquitectura y realizar una comprobación completa de CLIPS 6.31 (2019) desde Java
 
@@ -335,7 +335,7 @@ etc.
 # p40-clipsjni-051
 [Castellano](https://github.com/dpsframework/p40-clipsjni-051/#p40-clipsjni-051)
 
-## CLIPSJNI-051 upgrade proposal for dpsAgents-2.1 (Completed)
+#### CLIPSJNI-051 upgrade proposal for dpsAgents-2.1 (Completed)
 
 ## How to build the libraries for each architecture and how to perform a full check
 
