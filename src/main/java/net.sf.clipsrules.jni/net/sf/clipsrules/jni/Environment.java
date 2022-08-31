@@ -68,170 +68,235 @@ public class Environment {
 
 
      private long pointerToEnvironment;
-     private static final int CLIPSJNI_LOAD            = 0;
-     private static final int CLIPSJNI_LOADLIBRARY     = 1;
+     private static final int CLIPSJNI_LOAD_BY_JAR     = 0;
+     private static final int CLIPSJNI_LOAD_BY_PATH    = 1;
      private static final int CLIPSJNI_JARFILE         = 2;
      private static final int CLIPSJNI_JARNAME         = 3;
      private static final int CLIPSJNI_JARDIR          = 4;
+     
 
-     private static final String INFO_NOT_ALLOWED_ES_ES = "\n" +
-             "Por favor, utilice esta Shell del objeto Environment de CLIPS con la máxima precaución. \n"
-             + "Esta forma de acceder a la instancia de CLIPS, permite acceder a la Memoria de Trabajo, \n"
-             + "la Agenda y la Memoria Activa de la misma instancia controladas por un Agente-PS en tiempo \n"
-             + "de ejecución sobre JADE. Usted, puede seguir empleando esta consola de CLIPS mediante: \n\n"
-             + "java net.sf.clipsrules.jni.Shell para una mayor seguridad, generando una instancia aislada \n"
-             + "del motor CLIPS dentro de un hilo interno de ejecución.";
-           
-           private static final String INFO_NOT_ALLOWED = "\n" +
-             " NOTE: Please use this shell of the CLIPS Environment object with the utmost caution.  \n"
-             + " This way of accessing the CLIPS instance allows access to the Working Memory, \n"
-             + " Agenda and Active Memory of the same instance controlled by a PS-Agent at runtime \n"
-             + " on JADE. You can still use this CLIPS console via: java net.sf.clipsrules.jni.Shell \n"
-             + " for greater security, generating an isolated instance of the CLIPS engine within \n"
-             + " an internal thread of execution.\n"
-             + " For instance:\n\n"
-             + " $ java  net.sf.clipsrules.jni.Shell                               \n"
-             + " $ java -jar clipsjni-6.31-x64.jar net.sf.clipsrules.jni.Shell     \n\n"
-             + " Or with Java Module System call mode with:\n\n"
-             + " $ java -p clipsjni-6.31-x64.jar -m net.sf.clipsrules.jni/net.sf.clipsrules.jni.Shell"
-             + " \n\n Enjoy !";
 
-          
      /**
-      * @see http://lopica.sourceforge.net/os.html  for complete list of architectures / OS Names
+      * @see http://lopica.sourceforge.net/os.html for complete list of architectures
+      *      / OS Names
       * @return Native Library name with CLIPS-Version and JVM-OS architecture.
-      * @throws URISyntaxException 
+      * @throws URISyntaxException
       */
      public static String getNativeClipsJNIname(int mode) {
-          String arch  = System.getProperties().getProperty("os.arch");
-          String os    = System.getProperties().getProperty("os.name");
-          
-          String nativeSufj = ""; 
-          String nativeArch = ""; 
-          String nativeExt  = "";
-          
-          
-          
-          if ( arch.contains("amd86")  && os.contains("Linux"))   { 
-             nativeSufj  = "lib";
-             nativeExt   = ".so";
-             nativeArch  = "amd86";
-          }
-          
-          
-          if ( arch.contains("amd64")  && os.contains("Linux"))   { 
-             nativeSufj  = "lib";
-             nativeExt   = ".so";
-             nativeArch  = "amd64";
-          }
-          
-          
-          if ( arch.contains("86")     && os.contains("Windows")) { 
-             nativeSufj  = "";
-             nativeExt   = ".dll";
-             nativeArch = "x86";
-          }
-          
-          
-          if ( arch.contains("64")     && os.contains("Windows")) { 
-             nativeSufj  = "";
-             nativeExt   = ".dll";
-             nativeArch  = "x64";
-          }
-          
-          
-          if ( os.contains("Mac"))     { 
+         
+         String arch = System.getProperties().getProperty("os.arch");
+         String os = System.getProperties().getProperty("os.name");
+         String[][] gridOsArch = new String[][] { 
+             {"amd86", "Linux"  ,   "lib", ".so"    , "amd86"}, 
+             {"amd64", "Linux"  ,   "lib", ".so"    , "amd64"}, 
+             {"86",    "Windows",   ""   , ".dll"   , "x86"  }, 
+             {"64",    "Windows",   ""   , ".dll"   , "x64"  }, 
+             {"Mac",   ""       ,   "lib", "jnilib" , "osx64"}, 
+             {"arm",   "Linux"  ,   "lib", ".so"    , "arm64"}
+         };
+         
+         
+         
+         
+         // Defaults:
+         String nativeSufj = "lib";
+         String nativeArch = ".so";
+         String nativeExt = "amd64";
+
+         if  (arch.contains("amd86") && os.contains("Linux")) {
              nativeSufj = "lib";
-             nativeExt  = ".jnilib";
+             nativeExt = ".so";
+             nativeArch = "amd86";
+         } else if 
+             (arch.contains("amd64") && os.contains("Linux")) {
+             nativeSufj = "lib";
+             nativeExt = ".so";
+             nativeArch = "amd64";
+         } else if 
+             (arch.contains("86") && os.contains("Windows")) {
+             nativeSufj = "";
+             nativeExt = ".dll";
+             nativeArch = "x86";
+         } else if 
+             (arch.contains("64") && os.contains("Windows")) {
+             nativeSufj = "";
+             nativeExt = ".dll";
+             nativeArch = "x64";
+         } else if 
+             (os.contains("Mac")) {
+             nativeSufj = "lib";
+             nativeExt = ".jnilib";
              nativeArch = "osx64";
-          }
-          
-          
-          if ( arch.contains("arm")  &&   os.contains("Linux"))   { 
-             nativeSufj  = "lib";
-             nativeExt   = ".so";
-             nativeArch  = "arm64";
-          }
-          
-          
-          
-          String jarFile = net.sf.clipsrules.jni.Environment.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-          String jarName = CLIPSJNI_NAME + "-" + CLIPS_VERSION + "-" + nativeArch + ".jar";
-          String jarDir  = jarFile.split(jarName)[0];
-          // Debuggin:
-          //        System.out.println("jarFile: " + jarFile);
-          //        System.out.println("jarName: " + jarName);
-          //        System.out.println("jarDir:  " + jarDir);
+         } else if 
+             (arch.contains("arm") && os.contains("Linux")) {
+             nativeSufj = "lib";
+             nativeExt = ".so";
+             nativeArch = "arm64";
+         } else {         
+             System.out.println("Error: "
+                     + "Unknown architecture type: need to compile JAR/Native for this.");
+             System.exit(1);
+         }
+         
+                
+                 
+         /** 
+          *  JAR file: its path and real name.
+          */
+         String jarPathName = "";
+         String jarName = "";
+         String jarPath = "";
+         
+         
+         try {
+             jarPathName = net.sf.clipsrules.jni.Environment.class
+                 .getProtectionDomain()
+                 .getCodeSource()
+                 .getLocation()
+                 .toURI()
+                 .getPath();
+         
+             jarName = jarPathName.substring(jarPathName.lastIndexOf("/") + 1);
+             jarPath = jarPathName.split(jarName)[0];
+         } catch (URISyntaxException e) {
+             System.out.println(
+                     "[Critic]: there is a problem with clipsjni-JAR file name.");
+             e.printStackTrace();
+             System.exit(1);
+         }
 
+        
+         
+         /**
+          *  JAR & Native-LIB: generated names.
+          */   
+         String jarGenName     = CLIPSJNI_NAME + "-" + CLIPS_VERSION + "-" + nativeArch;
+         String jarGenNameExt  = jarGenName + ".jar";
+         String libraryGenName = "clipsjni-" + CLIPS_VERSION + "-" + nativeArch;
+         String libraryGenPath = jarPath + nativeSufj + libraryGenName + nativeExt;
+                 
+         
+         
+         /**
+          *  All of that was been to test 
+          *  the JVM architecture from Native-Library architecture
+          */   
+         if (! jarGenNameExt.equalsIgnoreCase(jarName) ){         
+             System.out.println("Critic: "
+                     + "This Native-Lib: " +  libraryGenName 
+                     + " is not correct for JVM architecture.");
+             System.exit(1);
+         }
+  
+         /**
+         Table of matches:
+         
+         Java-JAR                    Native-Library
+         =======================     ============================
+         clipsjni-6.31-amd32.jar --> libclipsjni-6.31-amd32.so
+         clipsjni-6.31-amd64.jar --> libclipsjni-6.31-amd64.so
+         clipsjni-6.31-x86.jar   --> clipsjni-6.31-x86.dll
+         clipsjni-6.31-x64.jar   --> clipsjni-6.31-x64.dll
+         clipsjni-6.31-osx64.jar --> libclipsjni-6.31-osx64.jnilib
+         clipsjni-6.31-arm64.jar --> libclipsjni-6.31-arm64.so
+         etc.
+       
+      
+      
+      System.out.println(
+              
+               "\nString jarPathName = " + jarPathName
+             + "\nString jarName     = " +jarName
+             + "\nString jarPath     = " +    jarPath 
+             + "\nString jarGenName     = " + jarGenName
+             + "\nString jarGenNameExt  = " + jarGenNameExt
+             + "\nString libraryGenName = " + libraryGenName 
+             + "\nString libraryGenPath = " + libraryGenPath                   
+      );
+      
+      */
+         
+         
 
-          String loadLibraryName = "clipsjni-" + CLIPS_VERSION + "-" + nativeArch;
-          String loadLibraryPath = jarDir + nativeSufj + loadLibraryName + nativeExt;
-          // The poor-man debugger:
-          // This produces:
-          // clipsjni-6.31-amd32.jar -->  libclipsjni-6.31-amd32.so
-          // clipsjni-6.31-amd64.jar -->  libclipsjni-6.31-amd64.so
-          // clipsjni-6.31-x86.jar   -->  clipsjni-6.31-x86.dll
-          // clipsjni-6.31-x64.jar   -->  clipsjni-6.31-x64.dll
-          // clipsjni-6.31-osx64.jar -->  libclipsjni-6.31-osx64.jnilib
-          // clipsjni-6.31-arm64.jar -->  libclipsjni-6.31-arm64.so
-          // 
-          // System.out.println("loadLibraryPath: " + loadLibraryPath);
-          
-          
-          
-          switch (mode) {
-          case CLIPSJNI_LOAD:          // 0 By default:
-               return( loadLibraryPath ); 
-               
-          case CLIPSJNI_LOADLIBRARY:   // 1
-               return( loadLibraryName );
-               
-          case CLIPSJNI_JARFILE:       // 2
-               return( jarFile );   
-               
-          case CLIPSJNI_JARNAME:       // 3
-               return( jarName );
-               
-          case CLIPSJNI_JARDIR:        // 4
-               return( jarDir );
+         switch (mode) {
+         case CLIPSJNI_LOAD_BY_JAR:          // mode = 0  returns full-path to Library 
+             return (libraryGenPath);
 
-          default:
-               // It finds Native Library at the same path of JAR file.
-               return( loadLibraryPath ); 
+         case CLIPSJNI_LOAD_BY_PATH:   // mode = 1  returns the name of Library
+             return (libraryGenName);
 
-          }
-          
-     }    
+         case CLIPSJNI_JARFILE:       // mode = 2  returns generated name of .JAR
+             return (jarGenNameExt);
+
+         case CLIPSJNI_JARNAME:       // mode = 3  returns real name of .JAR
+             return (jarName);
+
+         case CLIPSJNI_JARDIR:        // mode = 4  returns real path of .JAR
+             return (jarPath);
+
+         default:
+             return (libraryGenPath);  // mode = 0
+
+         }
+
+     }
+     
+     
      
 
      static {
-          
-          int modeLoad = CLIPSJNI_LOAD; // by default
-          
-          // When Java is launched with:  java -Dmode.clipsjni= 1 or 0
-          String javMode = System.getProperty("mode.clipsjni", "0");
-          
-          // When OS-Env contains variable: MODE_CLIPSJNI = 0/1
-          String envMode = System.getenv("MODE_CLIPSJNI");
-          if ( System.getenv("MODE_CLIPSJNI") == null ) {  envMode = "0";  } 
-          if ( javMode.equals("1") ||  envMode.equals("1") ) {    modeLoad = CLIPSJNI_LOADLIBRARY;     }
+         /**
+          * CASE 1:  OS-PATH load method (path-visibility)      
+          *          CLIPS searches Native-Library in OS-Path
+          * 
+          *          export MODE_CLIPSJNI=1      
+          *          java -jar clipsjni-6.40-x64.jar  
+          *          
+          *          By parameter: mode.clipsjni
+          *          java -Dmode.clipsjni=1  -jar clipsjni-6.40-x64.jar      
+          * 
+          * 
+          * CASE 0:  JAR-PATH load method (by default, jar-visibility)  
+          *          CLIPS searches Native-Library in same location of .JAR
+          *          
+          *          java -jar clipsjni-6.40-x64.jar
+          *          
+          */
+         String javMode = System.getProperty("mode.clipsjni", "0");
+         javMode = (javMode.equalsIgnoreCase("0")) ? "0" : "1";
+         
+         String envMode = System.getenv("MODE_CLIPSJNI");
+         if (envMode == null) { 
+             envMode = "0";
+         } else {
+             envMode = (envMode.equalsIgnoreCase("1")) ? "1" : "0";
+         }
+         
 
-          // System.out.println("mode.clipsjni: "+ javMode);
-          // System.out.println("MODE_CLIPSJNI: "+ envMode);
-          // System.out.println("modeLoad: "+ modeLoad);
-          
-          
-          // This is the java.lang.UnsatisfiedLinkError connection-moment:
-          // CLIPSJNI_LOAD        : uses complete name of Library with the full path of .JAR file.
-          // CLIPSJNI_LOADLIBRARY : uses OS PATH environment and simple name of Library.
-          if (modeLoad == CLIPSJNI_LOAD) {
-               System.load(       getNativeClipsJNIname(CLIPSJNI_LOAD       ));
-          } else  {
-               System.loadLibrary(getNativeClipsJNIname(CLIPSJNI_LOADLIBRARY));  
-          }
+         
+         int modeLoad = CLIPSJNI_LOAD_BY_JAR;
+
+         if (javMode.equals("1") || envMode.equals("1")) {
+             modeLoad = CLIPSJNI_LOAD_BY_PATH;
+         }
+
+         if (modeLoad == CLIPSJNI_LOAD_BY_JAR) {
+             System.load(getNativeClipsJNIname(CLIPSJNI_LOAD_BY_JAR));
+         } else {
+             System.loadLibrary(getNativeClipsJNIname(CLIPSJNI_LOAD_BY_PATH));
+         }
      }
+     
 
+     
+     
 
+     // //////////////////////////////////////////////////////////////////////
+     // //////////////////////////////////////////////////////////////////////
+     // //////////////////////////////////////////////////////////////////////
+     // //////////////////////////////////////////////////////////////////////
+     // //////////////////////////////////////////////////////////////////////
+     
 
      /**
       * CLIPS Java Native Methods and Fields.
@@ -454,7 +519,7 @@ public class Environment {
      
      
      
-     protected void commandLoop() {
+     public void commandLoop() {
           commandLoop(pointerToEnvironment);
      }
      
@@ -561,18 +626,16 @@ public class Environment {
      
      
      public static void main(String args[]) {
-          System.out.println(INFO_NOT_ALLOWED);
-          System.out.println();
-          // System.exit(0);
-          //        Environment clips;
-          //        clips = new Environment();
-          //        clips.commandLoop();
-          new Thread(new Runnable() {
+         System.out.println();
+         new Thread(new Runnable() {
              @Override
              public void run() {
-                Environment innEng = new Environment();
-                innEng.commandLoop();
-             }}).start();
-          
+                 Environment innEng;
+                 innEng = new Environment();
+                 innEng.commandLoop();
+             }
+         }).start();
+
      }
+     
 }

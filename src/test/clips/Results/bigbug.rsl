@@ -1,7 +1,7 @@
 bigbug.bat differences are as follows:
      6: 52109 ;; Reference mem-used number
-     6: 1689065
+     6: 851693
     13: 52109 ;; Should be the same as above
-    13: 1689065
+    13: 851693
     22: 52109 ;; Should be the same as above
-    22: 1689065
+    22: 851693

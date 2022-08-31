@@ -5,7 +5,7 @@ CLIPS> (clear)                   ; Memory Leak #1
 CLIPS> (progn (release-mem) TRUE)
 TRUE
 CLIPS> (mem-used)
-1689129
+851734
 CLIPS> (defclass SOURCE (is-a USER))
 CLIPS> 
 (deffunction foo()
@@ -28,7 +28,7 @@ CLIPS> (clear)                   ; Memory Leak #2
 CLIPS> (progn (release-mem) TRUE)
 TRUE
 CLIPS> (mem-used)
-1689249
+851854
 CLIPS> (defclass SOURCE (is-a USER))
 CLIPS> 
 (deffunction foo()
@@ -48,7 +48,7 @@ CLIPS> (clear)                   ; Memory Leak #3
 CLIPS> (progn (release-mem) TRUE)
 TRUE
 CLIPS> (mem-used)
-1689249
+851854
 CLIPS> (deftemplate SOURCE)
 CLIPS> 
 (deffunction foo()
@@ -71,7 +71,7 @@ CLIPS> (clear)                   ; Memory Leak #41
 CLIPS> (progn (release-mem) TRUE)
 TRUE
 CLIPS> (mem-used)
-1689249
+851854
 CLIPS> (deftemplate SOURCE)
 CLIPS> 
 (deffunction foo()
@@ -91,7 +91,7 @@ CLIPS> (clear)                   ; Memory Leak #5
 CLIPS> (progn (release-mem) TRUE)
 TRUE
 CLIPS> (mem-used)
-1689249
+851854
 CLIPS> 
 (defclass FOO (is-a USER)
    (slot value1))
@@ -111,7 +111,7 @@ CLIPS> (clear)                   ; Memory Leak #6
 CLIPS> (progn (release-mem) TRUE)
 TRUE
 CLIPS> (mem-used)
-1689249
+851854
 CLIPS> 
 (deftemplate FOO
    (slot value1 (type SYMBOL)))
@@ -136,7 +136,7 @@ CLIPS> (clear)
 CLIPS> (progn (release-mem) TRUE)
 TRUE
 CLIPS> (mem-used)
-1689249
+851854
 CLIPS> (clear)
 CLIPS> 
 (deftemplate nar 
@@ -180,13 +180,13 @@ CLIPS> (make-instance a of A)
 [a]
 CLIPS> (watch all)
 CLIPS> (modify-instance a (foo 0))
-MSG >> direct-modify ED:1 (<Instance-a> <Pointer-0000027282365530>)
+MSG >> direct-modify ED:1 (<Instance-a> <Pointer-157078F8>)
 HND >> direct-modify primary in class USER
-       ED:1 (<Instance-a> <Pointer-0000027282365530>)
+       ED:1 (<Instance-a> <Pointer-157078F8>)
 ::= local slot foo in instance a <- 0
 HND << direct-modify primary in class USER
-       ED:1 (<Instance-a> <Pointer-0000027282365530>)
-MSG << direct-modify ED:1 (<Instance-a> <Pointer-0000027282365530>)
+       ED:1 (<Instance-a> <Pointer-157078F8>)
+MSG << direct-modify ED:1 (<Instance-a> <Pointer-157078F8>)
 TRUE
 CLIPS> (unwatch all)
 CLIPS> (clear) ;; CLIPSESG Bug
@@ -1131,12 +1131,12 @@ CLIPS> (send [e1] print)
 [e1] of EXPERIMENT
 (fa <Dummy Fact>)
 (ia [e2])
-(ea <Pointer-C-0000000000000000>)
+(ea <Pointer-C-00000000>)
 CLIPS> (send [e2] print)
 [e2] of EXPERIMENT
 (fa <Dummy Fact>)
 (ia [Dummy Instance])
-(ea <Pointer-C-0000000000000000>)
+(ea <Pointer-C-00000000>)
 CLIPS> (clear) ; Local variables cannot be accessed bug
 CLIPS> 
 (deftemplate hello

@@ -146,6 +146,6 @@ For a total of 1 instance.
 CLIPS> (send [sv] print)
 MSG >> print ED:1 (<Instance-sv>)
 [sv] of SAVE-TEST
-(stamp 15.119)
+(stamp 24.893)
 MSG << print ED:1 (<Instance-sv>)
 CLIPS> (dribble-off)

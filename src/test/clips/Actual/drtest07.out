@@ -59,21 +59,21 @@ CLIPS> (progn (release-mem) TRUE)         ; DR0610 - Memory Loss
 TRUE
 CLIPS> (clear)                            ; DR0612
 CLIPS> (release-mem)                      ; DR0612
-2565
+1597
 CLIPS> (defrule x (not (a)) =>)           ; DR0612
 CLIPS> (clear)                            ; DR0612
 CLIPS> (progn (release-mem) TRUE)         ; DR0612 - Memory Loss
 TRUE
 CLIPS> (clear)                            ; DR0613
 CLIPS> (release-mem)                      ; DR0613
-2565
+1597
 CLIPS> (defrule x (not (a)) (not (b))  =>) 
 CLIPS> (clear)                            ; DR0613
 CLIPS> (progn (release-mem) TRUE)         ; DR0613 - Memory Loss
 TRUE
 CLIPS> (clear)                            ; DR0614
 CLIPS> (release-mem)                      ; DR0614
-2565
+1597
 CLIPS> (defglobal ?*x* = 3)               ; DR0614
 CLIPS> (defglobal ?*x* = 4)               ; DR0614
 CLIPS> (clear)                            ; DR0614
@@ -81,7 +81,7 @@ CLIPS> (progn (release-mem) TRUE)         ; DR0614 - Memory Loss
 TRUE
 CLIPS> (clear)                            ; DR0615
 CLIPS> (release-mem)                      ; DR0615
-2565
+1597
 CLIPS> (deftemplate x (multifield y) (multifield y))
 
 [PRNTUTIL5] The slot y has already been parsed.
@@ -95,7 +95,7 @@ CLIPS> (progn (release-mem) TRUE)         ; DR0615 - Memory Loss
 TRUE
 CLIPS> (clear)                            ; DR0616
 CLIPS> (release-mem)                      ; DR0616
-2565
+1597
 CLIPS> (any-instancep ((?a OBJECT) (?a OBJECT)) TRUE)
 [INSQYPSR1] Duplicate instance member variable name in function any-instancep.
 CLIPS> (clear)                            ; DR0616
@@ -103,7 +103,7 @@ CLIPS> (progn (release-mem) TRUE)         ; DR0616 - Memory Loss
 TRUE
 CLIPS> (clear)                            ; DR0617
 CLIPS> (release-mem)                      ; DR0617
-2565
+1597
 CLIPS> (bind ?a 3)                        ; DR0617
 3
 CLIPS> (clear)                            ; DR0617

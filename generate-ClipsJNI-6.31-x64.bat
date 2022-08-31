@@ -16,7 +16,8 @@ echo. and create file  src/main/c/net_sf_clipsrules_jni_Environment.h
 echo. -------------------------------------------------------------
 echo. javac -p %moName% %srClass%/%moName%/module-info.java %srClass%/%moName%/%ptClass%/*java -d %tgClass%/%moName%   -verbose -deprecation -h src/main/c
 echo.
-echo.
+echo. Without module: 
+echo. javac %srClass%/%moName%/%ptClass%/*java -d %tgClass%/%moName%   -verbose -deprecation -h src/main/c
 echo.
 echo.
 echo. -------------------------------------------------------------
@@ -33,6 +34,8 @@ echo. Make Jar file
 echo. -------------------------------------------------------------
 echo. jar  -cfe %jarName%.jar  %moName%.Shell %tgClass%/%moName%/%ptClass%/Shell.class %tgClass%/%moName%/module-info.class -C %tgClass%/%moName% net
 echo.
+echo. Without module: 
+echo. jar  -cfe %jarName%.jar  %moName%.Shell %tgClass%/%moName%/%ptClass%/Shell.class -C %tgClass%/%moName% net
 echo.
 echo. -------------------------------------------------------------
 echo. Launch with: 
