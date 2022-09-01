@@ -1,3 +1,0 @@
-drtest06.bat differences are as follows:
-   335: f-1     (foo (x <Pointer-C-0x0>)) ;; Any NULL pointer is OK
-   335: f-1     (foo (x <Pointer-C-00000000>))

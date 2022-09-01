@@ -1,8 +1,8 @@
 # CLIPS 6.31
 # CLIPSJNI library
-# Windows 10 with C:\Program Files\Java\jdk11.0.14
+# Windows 10 with Java C:\Program Files (x86)\java\java-se-8u41-ri  (2022)
 
-JAVA_HOME = C:\Program Files\Java\jdk11.0.14
+JAVA_HOME = C:\Program Files (x86)\java\java-se-8u41-ri
 JAVA_INCLUDE = $(JAVA_HOME)\include
 JAVA_LIB = $(JAVA_HOME)\lib
 
@@ -40,7 +40,7 @@ OBJS = agenda.obj analysis.obj argacces.obj bload.obj bmathfun.obj bsave.obj \
 	cl -c -DWIN_MVC -DALLOW_ENVIRONMENT_GLOBALS=0 /I"$(JAVA_INCLUDE)" /I"$(JAVA_INCLUDE)\win32" $<
 
 CLIPSJNI.dll : $(OBJS)
-	link /MACHINE:X64 /libpath:"$(JAVA_LIB)" *.obj  /dll /out:clipsjni-6.31-x64.dll
+	link /MACHINE:X86 /libpath:"$(JAVA_LIB)" *.obj  /dll /out:clipsjni-6.31-x32.dll
 
 net_sf_clipsrules_jni_Environment.obj: net_sf_clipsrules_jni_Environment.c \
   net_sf_clipsrules_jni_Environment.h setup.h envrnmnt.h \

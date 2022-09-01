@@ -87,12 +87,12 @@ public class Environment {
          String arch = System.getProperties().getProperty("os.arch");
          String os = System.getProperties().getProperty("os.name");
          String[][] gridOsArch = new String[][] { 
-             {"amd86", "Linux"  ,   "lib", ".so"    , "amd86"}, 
-             {"amd64", "Linux"  ,   "lib", ".so"    , "amd64"}, 
-             {"86",    "Windows",   ""   , ".dll"   , "x86"  }, 
-             {"64",    "Windows",   ""   , ".dll"   , "x64"  }, 
-             {"Mac",   ""       ,   "lib", "jnilib" , "osx64"}, 
-             {"arm",   "Linux"  ,   "lib", ".so"    , "arm64"}
+             {"amd86", "Linux"  ,  "lib", ".so"     , "amd86" }, 
+             {"amd64", "Linux"  ,  "lib", ".so"     , "amd64" }, 
+             {"x86"  , "Windows",  ""   , ".dll"    , "x32"   }, 
+             {"x64"  , "Windows",  ""   , ".dll"    , "x64"   }, 
+             {"Mac"  , ""       ,  "lib", ".jnilib" , "osx64" }, 
+             {"arm"  , "Linux"  ,  "lib", ".so"     , "arm64" }
          };
          
          
@@ -113,10 +113,10 @@ public class Environment {
              nativeExt = ".so";
              nativeArch = "amd64";
          } else if 
-             (arch.contains("86") && os.contains("Windows")) {
+             (arch.contains("x86") && os.contains("Windows")) {
              nativeSufj = "";
              nativeExt = ".dll";
-             nativeArch = "x86";
+             nativeArch = "x32";
          } else if 
              (arch.contains("64") && os.contains("Windows")) {
              nativeSufj = "";
@@ -134,14 +134,21 @@ public class Environment {
              nativeArch = "arm64";
          } else {         
              System.out.println("Error: "
-                     + "Unknown architecture type: need to compile JAR/Native for this.");
-             System.exit(1);
+                     + "Unknown architecture type: You needs to compile JAR/Native for this machine.");
+             System.out.println(
+                     "\nString nativeSufj     = " + nativeSufj
+                   + "\nString nativeExt      = " + nativeExt
+                   + "\nString nativeArch     = " + nativeArch
+                   + "\nString arch           = " + arch
+                   + "\nString os             = " + os
+            );         
+            System.exit(1);
          }
          
                 
                  
          /** 
-          *  JAR file: its path and real name.
+          *  The CLIPSJNI--.JAR file: its path and real name.
           */
          String jarPathName = "";
          String jarName = "";
@@ -162,6 +169,17 @@ public class Environment {
              System.out.println(
                      "[Critic]: there is a problem with clipsjni-JAR file name.");
              e.printStackTrace();
+             System.out.println(
+                     
+                     "\nString jarPathName    = " + jarPathName
+                   + "\nString jarName        = " + jarName
+                   + "\nString jarPath        = " + jarPath 
+                   + "\nString nativeSufj     = " + nativeSufj
+                   + "\nString nativeExt      = " + nativeExt
+                   + "\nString nativeArch     = " + nativeArch
+                   + "\nString arch           = " + arch
+                   + "\nString os             = " + os
+             );
              System.exit(1);
          }
 
@@ -185,6 +203,20 @@ public class Environment {
              System.out.println("Critic: "
                      + "This Native-Lib: " +  libraryGenName 
                      + " is not correct for JVM architecture.");
+             System.out.println(        
+                     "\nString jarPathName    = " + jarPathName
+                   + "\nString jarName        = " + jarName
+                   + "\nString jarPath        = " + jarPath 
+                   + "\nString jarGenName     = " + jarGenName
+                   + "\nString jarGenNameExt  = " + jarGenNameExt
+                   + "\nString libraryGenName = " + libraryGenName 
+                   + "\nString libraryGenPath = " + libraryGenPath
+                   + "\nString nativeSufj     = " + nativeSufj
+                   + "\nString nativeExt      = " + nativeExt
+                   + "\nString nativeArch     = " + nativeArch
+                   + "\nString arch           = " + arch
+                   + "\nString os             = " + os
+             );         
              System.exit(1);
          }
   
@@ -195,28 +227,30 @@ public class Environment {
          =======================     ============================
          clipsjni-6.31-amd32.jar --> libclipsjni-6.31-amd32.so
          clipsjni-6.31-amd64.jar --> libclipsjni-6.31-amd64.so
-         clipsjni-6.31-x86.jar   --> clipsjni-6.31-x86.dll
+         clipsjni-6.31-x32.jar   --> clipsjni-6.31-x32.dll
          clipsjni-6.31-x64.jar   --> clipsjni-6.31-x64.dll
          clipsjni-6.31-osx64.jar --> libclipsjni-6.31-osx64.jnilib
          clipsjni-6.31-arm64.jar --> libclipsjni-6.31-arm64.so
          etc.
-       
-      
-      
-      System.out.println(
-              
-               "\nString jarPathName = " + jarPathName
-             + "\nString jarName     = " +jarName
-             + "\nString jarPath     = " +    jarPath 
-             + "\nString jarGenName     = " + jarGenName
-             + "\nString jarGenNameExt  = " + jarGenNameExt
-             + "\nString libraryGenName = " + libraryGenName 
-             + "\nString libraryGenPath = " + libraryGenPath                   
-      );
-      
-      */
+
          
-         
+         System.out.println(        
+                 "\nString jarPathName    = " + jarPathName
+               + "\nString jarName        = " + jarName
+               + "\nString jarPath        = " + jarPath 
+               + "\nString jarGenName     = " + jarGenName
+               + "\nString jarGenNameExt  = " + jarGenNameExt
+               + "\nString libraryGenName = " + libraryGenName 
+               + "\nString libraryGenPath = " + libraryGenPath
+               + "\nString nativeSufj     = " + nativeSufj
+               + "\nString nativeExt      = " + nativeExt
+               + "\nString nativeArch     = " + nativeArch
+               + "\nString arch           = " + arch
+               + "\nString os             = " + os
+         );         
+        
+      
+         */
 
          switch (mode) {
          case CLIPSJNI_LOAD_BY_JAR:          // mode = 0  returns full-path to Library 
