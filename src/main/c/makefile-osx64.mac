@@ -54,6 +54,7 @@ libCLIPSJNI.jnilib : $(OBJS) net_sf_clipsrules_jni_Environment.c
 		-I$(JAVA_INCLUDE_OS) \
 		-framework JavaNativeFoundation -lm $(OBJS)
 
+
 net_sf_clipsrules_jni_Environment.o: net_sf_clipsrules_jni_Environment.c \
   net_sf_clipsrules_jni_Environment.h \
   clips.h setup.h envrnmnt.h symbol.h multifld.h evaluatn.h constant.h \
